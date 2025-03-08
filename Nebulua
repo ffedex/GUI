@@ -1,64 +1,15 @@
 -- UI Close/Open keybind
 -- NEBULUA KEY: PlmFx85Vxt
 
--- Create a small square button
-local button = {
-    x = 100,
-    y = 100,
-    size = 30,
-    dragging = false,
-    offsetX = 0,
-    offsetY = 0
-}
+local RightAltButton = Instance.new("TextButton", ScreenGui)
+RightAltButton.Size = UDim2.new(0, 50, 0, 25) -- Small square button
+RightAltButton.Position = UDim2.new(0.5, -25, 0.5, -12)
+RightAltButton.BackgroundColor3 = Color3.fromRGB(255, 165, 0) -- Orange color
+RightAltButton.Text = "RAlt"
+RightAltButton.Draggable = true
 
--- Function to check if the mouse is inside the button
-function isMouseInsideButton(mx, my)
-    return mx >= button.x and mx <= button.x + button.size and
-           my >= button.y and my <= button.y + button.size
-end
-
--- Mouse press event
-function onMousePress(mx, my)
-    if isMouseInsideButton(mx, my) then
-        button.dragging = true
-        button.offsetX = mx - button.x
-        button.offsetY = my - button.y
-    end
-end
-
--- Mouse release event
-function onMouseRelease()
-    button.dragging = false
-end
-
--- Mouse move event
-function onMouseMove(mx, my)
-    if button.dragging then
-        button.x = mx - button.offsetX
-        button.y = my - button.offsetY
-    end
-end
-
--- Button click event (simulates Right Alt key press)
-function onButtonClick()
-    if isMouseInsideButton(button.x, button.y) then
-        os.execute("xdotool key Alt_R") -- Simulates Right Alt key press (Linux)
-        -- For Windows, use a key simulation library
-    end
-end
-
--- Example event loop (replace with your GUI framework's event system)
-while true do
-    local event, a, b = os.pullEvent()
-    
-    if event == "mouse_click" then
-        onMousePress(a, b)
-        onButtonClick()
-    elseif event == "mouse_drag" then
-        onMouseMove(a, b)
-    elseif event == "mouse_up" then
-        onMouseRelease()
-    end
-end
+RightAltButton.MouseButton1Click:Connect(function()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightAlt, false, game)
+end)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Feimgps/Nebula/refs/heads/main/Nebulua"))()
